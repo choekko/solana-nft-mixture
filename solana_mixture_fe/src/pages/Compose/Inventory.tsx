@@ -29,10 +29,17 @@ const Inventory = ({ reagentNftsData, callbackAfterReagentClick, isLoading, disa
   return (
     <>
       <div>
-        <span style={{ right: 0 }}>inventory </span>
+        <span style={{ display: 'flex', justifyContent: 'end', marginTop: '20px' }}>inventory </span>
         {isLoading ? (
           <div css={inventoryStyle}>
             <span>isLoading...</span>
+          </div>
+        ) : reagentNftsData.length === 0 ? (
+          <div css={inventoryStyle}>
+            <span>
+              No current version of the item was found.
+              <br /> Check if your wallet is loading.
+            </span>
           </div>
         ) : reagentNftsData.length <= 7 ? (
           <div css={inventoryStyle}>
@@ -72,9 +79,11 @@ const inventoryStyle = css`
   margin: 0 0 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 560px;
   height: 100px;
   border: 1px solid #737373;
+  font-size: 20px;
 `;
 
 export default Inventory;

@@ -73,17 +73,17 @@ const Compose = () => {
   }, [nfts]);
 
   const callbackAfterReagentClick = (mintAccountAddress: string) => {
-    const clickedReagentNftsDataIndex = reagentNftsData.findIndex(
+    const clickedReagentNftDataIndex = reagentNftsData.findIndex(
       reagentNftData => reagentNftData.mint === mintAccountAddress,
     );
-    const clickedReagentNftsData = reagentNftsData[clickedReagentNftsDataIndex];
+    const clickedReagentNftData = reagentNftsData[clickedReagentNftDataIndex];
 
     let isClickPossible = false;
-    if (clickedReagentNftsData.mint === leftReagent?.mint) {
+    if (clickedReagentNftData.mint === leftReagent?.mint) {
       setLeftReagent(undefined);
       isClickPossible = true;
     }
-    if (clickedReagentNftsData.mint === rightReagent?.mint) {
+    if (clickedReagentNftData.mint === rightReagent?.mint) {
       setRightReagent(undefined);
       isClickPossible = true;
     }
@@ -96,13 +96,13 @@ const Compose = () => {
           rightReagent.attributes.some(
             ({ trait_type, value }) =>
               trait_type === 'ElEMENT1' &&
-              value === clickedReagentNftsData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
+              value === clickedReagentNftData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
           )
         ) {
           alert('Same Element!');
           return;
         }
-        setLeftReagent(clickedReagentNftsData);
+        setLeftReagent(clickedReagentNftData);
         isClickPossible = true;
       }
       if (!rightReagent && !isClickPossible) {
@@ -111,13 +111,13 @@ const Compose = () => {
           leftReagent.attributes.some(
             ({ trait_type, value }) =>
               trait_type === 'ElEMENT1' &&
-              value === clickedReagentNftsData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
+              value === clickedReagentNftData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
           )
         ) {
           alert('Same Element!');
           return;
         }
-        setRightReagent(clickedReagentNftsData);
+        setRightReagent(clickedReagentNftData);
         isClickPossible = true;
       }
     }
@@ -127,7 +127,7 @@ const Compose = () => {
         reagentNftsData.map(reagentNftData => ({
           ...reagentNftData,
           isClicked:
-            reagentNftData.mint === clickedReagentNftsData.mint ? !reagentNftData.isClicked : reagentNftData.isClicked,
+            reagentNftData.mint === clickedReagentNftData.mint ? !reagentNftData.isClicked : reagentNftData.isClicked,
         })),
       );
     }
@@ -159,8 +159,12 @@ const Compose = () => {
 
   return (
     <div css={composeWrapStyle}>
-      <TitleBox title="Mix Reagents" subTitle="You can also compose mixture." />
-      {!wallet.publicKey && <span>Please Login</span>}
+      <TitleBox title="Compose Reagents" subTitle="You can also compose reagents." />
+      {!wallet.publicKey && (
+        <label css={loginMessageStyle} htmlFor="wallet_btn">
+          <span>Please Connect Wallet</span>
+        </label>
+      )}
       {wallet?.publicKey && (
         <>
           <Inventory
@@ -217,6 +221,23 @@ const mixtureMachineBtnStyle = (theme: Theme) => css`
 
   &:disabled {
     background-color: ${theme.color.backgroundDark};
+  }
+`;
+
+const loginMessageStyle = (theme: Theme) => css`
+  padding: 20px;
+  border: 1px solid #376086;
+  border-radius: 20px;
+  margin: 30px 0;
+
+  &:hover {
+    background-color: ${theme.color.skyblue};
+    cursor: pointer;
+  }
+
+  & > span {
+    font-size: 30px;
+    font-weight: bold;
   }
 `;
 

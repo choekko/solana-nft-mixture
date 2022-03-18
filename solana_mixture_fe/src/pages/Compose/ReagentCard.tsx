@@ -2,6 +2,8 @@
 import { css, Theme } from '@emotion/react';
 import { ReagentNftData } from 'pages/Compose/Inventory';
 import { getAttributeValue } from 'utils/metadata';
+import { useMemo } from 'react';
+import { saveToClipboard } from 'utils/clipboard';
 
 interface ReagentCardProps {
   data?: ReagentNftData;
@@ -11,22 +13,45 @@ interface ReagentCardProps {
 
 const ReagentCard = ({ data, callbackAfterClick, disabled }: ReagentCardProps) => {
   const isActive = Boolean(data);
-  const handleClick = () => {
+  const handleReagentCardClick = () => {
     if (data && !disabled) {
       callbackAfterClick?.(data.mint);
     }
   };
 
+  const handleClipboardBtnClick = (e: MouseEvent, txt: string) => {
+    e.stopPropagation();
+    saveToClipboard(txt);
+  };
+
+  const attributes = useMemo(() => {
+    const element1 = data && getAttributeValue(data.attributes, 'Element1');
+    const element2 = data && getAttributeValue(data.attributes, 'Element2');
+    let result = [];
+    if (element1) result.push(element1);
+    if (element2) result.push(element2);
+    return result;
+  }, [data]);
+
   return (
     <article css={theme => reagentCardWrapStyle(theme, isActive)}>
-      <div css={reagentCardStyle} onClick={handleClick}>
+      <div css={reagentCardStyle} onClick={handleReagentCardClick}>
         <div css={imageWrapStyle}>{data && <img alt="reagent" src={data.imageUrl} />}</div>
-        <span css={theme => nameStyle(theme, isActive)}> {data ? data.data.name : 'Select Reagent'}</span>
-        <div css={attributesWrapStyle}>
-          {data && <span>{getAttributeValue(data.attributes, 'Element1')}</span>}
-          {data && getAttributeValue(data.attributes, 'Element2') && (
-            <span>{getAttributeValue(data.attributes, 'Element2')}</span>
-          )}
+        <div css={descriptionWrapStyle}>
+          <span css={theme => nameStyle(theme, isActive)}> {data ? data.data.name : 'Select Reagent'}</span>
+          <div css={attributesWrapStyle}>
+            {attributes.map(attribute => (
+              <span key={attribute}>{attribute}</span>
+            ))}
+          </div>
+          <span css={mintAddressStyle}>
+            {data && (
+              <>
+                Mint : {data && data.mint.slice(0, 5) + '...' + data.mint.slice(-5)}
+                <img src="/assets/icon/clipboard.png" onClick={e => handleClipboardBtnClick(e, data.mint)} />
+              </>
+            )}
+          </span>
         </div>
       </div>
     </article>
@@ -53,9 +78,8 @@ const reagentCardStyle = css`
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: space-around;
   height: calc(100% - 20px);
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   box-sizing: border-box;
 `;
 
@@ -73,9 +97,18 @@ const imageWrapStyle = (theme: Theme) => css`
   }
 `;
 
+const descriptionWrapStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  gap: 15px;
+  height: 170px;
+`;
+
 const attributesWrapStyle = css`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 
   & > span {
@@ -90,9 +123,25 @@ const attributesWrapStyle = css`
 `;
 
 const nameStyle = (theme: Theme, isActive: boolean) => css`
+  text-align: center;
   font-weight: bold;
   font-size: 24px;
   ${!isActive && `color: ${theme.color.dark}`};
+`;
+
+const mintAddressStyle = css`
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  justify-content: center;
+
+  img {
+    width: 20px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
 `;
 
 export default ReagentCard;

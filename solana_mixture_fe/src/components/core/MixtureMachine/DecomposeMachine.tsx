@@ -31,7 +31,9 @@ const DecomposeMachine = ({
   decomposeBtnCss,
   callbackAfterDecompose,
 }: DecomposeMachineProps) => {
-  const [isComposePossible, setIsComposePossible] = useState(false);
+  const [isComposePossible, setIsComposePossible] = useState(
+    parentMixtureProgramId && parentMint && childMints.length !== 0,
+  );
   const wallet = useWallet();
   const { connection } = useConnection();
 

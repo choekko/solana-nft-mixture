@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 const Purchase = () => {
   return (
     <div>
-      <TitleBox title="Buy Reagent" subTitle="Buy, Mix, and Research!" />
+      <TitleBox title="Buy Reagent" subTitle="Buy, Mix, and Research!  25 reagents per day (UTC AM 1:00)" />
       <div css={mintBoxWrapCss}>
         <MintBox />
       </div>

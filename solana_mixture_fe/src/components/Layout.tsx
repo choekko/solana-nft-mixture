@@ -23,7 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-const mainSectionWrapCss = (theme: Theme) => css`
+export const mainSectionWrapCss = (theme: Theme) => css`
   padding-left: 100px;
   background-color: ${theme.color.backgroundDeepDark};
   height: 100vh;

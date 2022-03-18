@@ -31,14 +31,12 @@ export const getMixtureMachineId = async (
       childrenAttributes,
     });
 
-    const response: AxiosResponse<UploaderResponse> = await axios.post('http://54.180.95.41:8082/upload', requestData);
+    const response: AxiosResponse<UploaderResponse> = await axios.post('https://mixtureapi.shop/upload', requestData);
     console.log('upload response::', response);
     if (response.data.status === 'fail') {
       throw new Error('upload fail');
     }
     return new anchor.web3.PublicKey(response.data.mixture);
-
-    // return new anchor.web3.PublicKey('5qboT7jgnuWNQvSShNKegNbKwzAGkJohhYdZcHdbqUxW');
   } catch (e) {
     throw new Error('Failed to construct MixtureMachine [업로더 실패]');
   }

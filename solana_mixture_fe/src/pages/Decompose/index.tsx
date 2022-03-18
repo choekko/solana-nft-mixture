@@ -8,7 +8,7 @@ import { useWalletNfts } from '@nfteyez/sol-rayz-react';
 import Inventory, { ReagentNftData } from 'pages/Compose/Inventory';
 import ReagentCard from 'pages/Compose/ReagentCard';
 import { css, Theme } from '@emotion/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { MetaData } from 'components/core/MixtureMachine/types/metaData';
 import axios from 'axios';
 import { getAttributeValue } from 'utils/metadata';
@@ -25,14 +25,13 @@ const Decompose = () => {
   const [isDecomposing, setIsDecomposing] = useState(false);
   const [reagentNftsData, setReagentNftsData] = useState<ReagentNftData[]>([]);
   const [selectedNftData, setSelectedNftData] = useState<ReagentNftData | undefined>(undefined);
-  console.log(nfts);
 
   const getMetaData = async (metadataUrl: string): Promise<MetaData> => {
     try {
       const response = await axios.get(metadataUrl);
       return response.data;
     } catch (error) {
-      throw new Error('getMetaData');
+      throw new Error('getMetaData Error');
     }
   };
 
@@ -51,7 +50,6 @@ const Decompose = () => {
         reagentNftsData[idx]['attributes'] = metaData.attributes;
         reagentNftsData[idx]['properties'] = metaData.properties;
       });
-      console.log(metaDataList);
       reagentNftsData = reagentNftsData.filter(reagentNft => {
         if (Number(getAttributeValue(reagentNft.attributes, 'Version')) !== Version) {
           return false;
@@ -78,13 +76,20 @@ const Decompose = () => {
       reagentNftData => reagentNftData.mint === mintAccountAddress,
     );
     const clickedReagentNftData = reagentNftsData[clickedReagentNftDataIndex];
-    setSelectedNftData(clickedReagentNftData);
+
+    setSelectedNftData(selectedNftData?.mint !== mintAccountAddress ? clickedReagentNftData : undefined);
+    setReagentNftsData(
+      reagentNftsData.map(reagentNftData => ({
+        ...reagentNftData,
+        isClicked: reagentNftData.mint === clickedReagentNftData.mint ? !reagentNftData.isClicked : false,
+      })),
+    );
   };
 
-  const parentMint = selectedNftData ? new anchor.web3.PublicKey(selectedNftData.mint) : undefined;
+  const parentMint = selectedNftData ? new anchor.web3.PublicKey(selectedNftData.mint) : null;
   const parentMixtureProgramId = selectedNftData
     ? new anchor.web3.PublicKey(selectedNftData.data.creators[1].address)
-    : undefined;
+    : null;
 
   const child2 = selectedNftData
     ? new anchor.web3.PublicKey(selectedNftData.properties.children[0].pubkeys[0])
@@ -94,22 +99,19 @@ const Decompose = () => {
     : undefined;
   const childMints = child1 && child2 ? [child1, child2] : [];
 
-  console.log(parentMint, parentMixtureProgramId, child1, child2);
-
-  const isPossible = useMemo(
-    () => parentMint && parentMixtureProgramId && child1 && child2 && childMints,
-    [parentMint, parentMixtureProgramId, child2, child1, childMints],
-  );
-
   const callbackAfterDecompose = () => {
     alert('Complete!');
     window.location.reload();
   };
-  console.log(selectedNftData);
   return (
     <>
       <div css={decomposeWrapStyle}>
-        <TitleBox title="Separate Mixture" subTitle="You can get the reagents back before synthesizing" />
+        <TitleBox title="Decompose Mixture" subTitle="You can go back to before mixing." />
+        {!wallet?.publicKey && (
+          <label css={loginMessageStyle} htmlFor="wallet_btn">
+            <span>Please Connect Wallet</span>
+          </label>
+        )}
         {wallet?.publicKey && (
           <>
             <Inventory
@@ -121,18 +123,16 @@ const Decompose = () => {
             <section css={reagentCardsWrapStyle}>
               <ReagentCard data={selectedNftData} callbackAfterClick={callbackAfterReagentClick} disabled={isLoading} />
             </section>
-            {isPossible && (
-              <DecomposeMachine
-                decomposeBtnCss={decomposeMachineBtnStyle}
-                isLoading={isLoading}
-                parentMint={parentMint!}
-                parentMixtureProgramId={parentMixtureProgramId!}
-                childMints={childMints}
-                isDecomposing={isDecomposing}
-                setIsDecomposing={setIsDecomposing}
-                callbackAfterDecompose={callbackAfterDecompose}
-              />
-            )}
+            <DecomposeMachine
+              decomposeBtnCss={decomposeMachineBtnStyle}
+              isLoading={isLoading}
+              parentMint={parentMint}
+              parentMixtureProgramId={parentMixtureProgramId}
+              childMints={childMints}
+              isDecomposing={isDecomposing}
+              setIsDecomposing={setIsDecomposing}
+              callbackAfterDecompose={callbackAfterDecompose}
+            />
           </>
         )}
       </div>
@@ -170,5 +170,22 @@ const decomposeMachineBtnStyle = (theme: Theme) => css`
 
   &:disabled {
     background-color: ${theme.color.backgroundDark};
+  }
+`;
+
+const loginMessageStyle = (theme: Theme) => css`
+  padding: 20px;
+  border: 1px solid #376086;
+  border-radius: 20px;
+  margin: 30px 0;
+
+  &:hover {
+    background-color: ${theme.color.skyblue};
+    cursor: pointer;
+  }
+
+  & > span {
+    font-size: 30px;
+    font-weight: bold;
   }
 `;

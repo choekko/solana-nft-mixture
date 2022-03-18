@@ -7,6 +7,8 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import Router from '../../routes/Router';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { clusterApiUrl } from '@solana/web3.js';
+import { useMediaQuery } from 'react-responsive';
+import Mobile from 'pages/Mobile';
 
 function App() {
   const wallets = [new PhantomWalletAdapter()];
@@ -15,6 +17,10 @@ function App() {
 
   // You can also provide a custom RPC endpoint.
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  const isMobile = useMediaQuery({ maxWidth: 1224 });
+
+  if (isMobile) return <Mobile />;
 
   return (
     <ConnectionProvider endpoint={endpoint}>

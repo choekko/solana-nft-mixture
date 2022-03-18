@@ -35,7 +35,7 @@ const WalletBtn = () => {
       {wallet ? (
         <WalletMultiButton />
       ) : (
-        <button css={WalletBtnCss} onClick={handleWalletClick}>
+        <button id="wallet_btn" css={WalletBtnCss} onClick={handleWalletClick}>
           <img src="/assets/icon/wallet_dark.png" css={{ width: '30px' }} />
           <span> Wallet </span>
         </button>
