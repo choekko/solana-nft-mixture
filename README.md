@@ -1,4 +1,8 @@
 # Mixture_machine
+|SITE|
+|:-:|
+|www.nftmixture.xyz|
+
 ## Core logic of composing NFT
 ![image](https://user-images.githubusercontent.com/96561121/158933209-1c7294c2-844a-4ad8-ad59-91819073d492.png)
 
