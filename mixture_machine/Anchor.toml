@@ -1,0 +1,14 @@
+[features]
+seeds = false
+[programs.devnet]
+mixture_machine = "7TzTuLobYxcPJw62EMEq93C72vBd8tmRP8CbQ7e4tS3z"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"
+wallet = "/Users/c0wjay/.config/solana/id.json"
+
+[scripts]
+test = "yarn run mocha -t 1000000 tests/"

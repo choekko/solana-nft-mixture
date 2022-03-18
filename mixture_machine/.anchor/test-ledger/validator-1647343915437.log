@@ -1,0 +1,19 @@
+[2022-03-15T11:31:55.439426000Z INFO  solana_test_validator] solana-validator 1.8.5 (src:76c5c94a; feat:52865992)
+[2022-03-15T11:31:55.439483000Z INFO  solana_test_validator] Starting validator with: ArgsOs {
+        inner: [
+            "solana-test-validator",
+            "--ledger",
+            ".anchor/test-ledger",
+            "--mint",
+            "2uABvaUzKwWKU21AGNsyLpvLRLYAoNK8ZFeBYZbeYwaM",
+            "--bpf-program",
+            "7TzTuLobYxcPJw62EMEq93C72vBd8tmRP8CbQ7e4tS3z",
+            "/Users/c0wjay/projects/mixture_machine/target/deploy/mixture_machine.so",
+        ],
+    }
+[2022-03-15T11:31:55.440086000Z WARN  solana_perf] CUDA is disabled
+[2022-03-15T11:31:55.450939000Z INFO  solana_faucet::faucet] Faucet started. Listening on: 0.0.0.0:9900
+[2022-03-15T11:31:55.450960000Z INFO  solana_faucet::faucet] Faucet account address: BtfcFtbTNPqTbRgDP3m8a3KTar2gST65ZwzgxFqzAHwC
+[2022-03-15T11:31:55.462131000Z INFO  solana_ledger::blockstore] Maximum open file descriptors: 500000
+[2022-03-15T11:31:55.462148000Z INFO  solana_ledger::blockstore] Opening database at ".anchor/test-ledger/rocksdb"
+[2022-03-15T11:31:55.737672000Z INFO  solana_ledger::blockstore] ".anchor/test-ledger/rocksdb" open took 275ms

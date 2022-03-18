@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "amd": true,
+    "browser": true,
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint",
+    "@emotion"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "eslint-config-prettier",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "no-async-promise-executor": 0,
+    "no-debugger": 0,
+    "eqeqeq": ["error", "always"],
+    "prettier/prettier": "warn",
+    "no-unexpected-multiline": "error",
+    "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "^_", "varsIgnorePattern": "^_"}]
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/*.spec.{j,t}s?(x)", "**/tests/**/*.spec.{j,t}s?(x)"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
+  "globals": {
+    "globalThis": false
+  }
+}
