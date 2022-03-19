@@ -32,6 +32,7 @@ const ComposeMachine = ({
   callbackAfterCompose,
 }: ComposeMachineProps) => {
   const [isComposePossible, setIsComposePossible] = useState(false);
+  const [isUsingUploader, setIsUsingUploader] = useState(false);
   const wallet = useWallet();
   const { connection } = useConnection();
 
@@ -62,21 +63,38 @@ const ComposeMachine = ({
 
     try {
       const mintKeyPair = anchor.web3.Keypair.generate();
+      setIsUsingUploader(true);
       const mixtureMachineId = await getMixtureMachineId(
         wallet.publicKey,
         mintKeyPair.publicKey,
         childMints,
         childrenAttributes,
       );
+      setIsUsingUploader(false);
       const mixtureMachineInfo = await getMixtureMachineState(anchorWallet, mixtureMachineId, connection);
       const mintTxId = (await compose(mintKeyPair, mixtureMachineInfo, wallet.publicKey, childMints))[0];
       const txTimeoutInMilliseconds = 15000;
 
+      let status: any = { err: true };
       if (mintTxId) {
-        await awaitTransactionSignatureConfirmation(mintTxId, txTimeoutInMilliseconds, connection, true);
-        callbackAfterCompose?.();
+        status = await awaitTransactionSignatureConfirmation(mintTxId, txTimeoutInMilliseconds, connection, true);
       }
-    } catch (error) {
+
+      if (status && !status.err) {
+        callbackAfterCompose?.();
+      } else {
+        alert('Compose failed! Please try again!\n(Check your funds on devnet)');
+      }
+    } catch (error: any) {
+      let message = error.msg || 'Composing failed! Please try again!';
+      if (!error.msg) {
+        if (!error.message) {
+          message = 'Transaction Timeout! Please try again.';
+        } else if (error.message.indexOf('0x135')) {
+          message = `Insufficient funds to compose. Please fund your wallet.`;
+        }
+      }
+      alert(message);
       setIsComposing?.(false);
     }
 
@@ -88,7 +106,11 @@ const ComposeMachine = ({
       {isLoading || isComposing ? (
         <>
           <BallTriangle ariaLabel="loading-indicator" color={theme.color.skyblue} width={20} height={20} />
-          {isComposing && <span style={{ color: theme.color.skyblue, marginLeft: '10px' }}>Composing...</span>}
+          {isComposing && (
+            <span style={{ color: theme.color.skyblue, marginLeft: '10px' }}>
+              {isUsingUploader ? 'Checking...' : 'Composing...'}
+            </span>
+          )}
         </>
       ) : (
         'Compose'

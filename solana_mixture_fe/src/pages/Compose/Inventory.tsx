@@ -37,7 +37,7 @@ const Inventory = ({ reagentNftsData, callbackAfterReagentClick, isLoading, disa
         ) : reagentNftsData.length === 0 ? (
           <div css={inventoryStyle}>
             <span>
-              No current version of the item was found.
+              No current version of the item was found (devnet).
               <br /> Check if your wallet is loading.
             </span>
           </div>

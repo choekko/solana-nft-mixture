@@ -100,8 +100,8 @@ const Decompose = () => {
   const childMints = child1 && child2 ? [child1, child2] : [];
 
   const callbackAfterDecompose = () => {
-    alert('Complete!');
-    window.location.reload();
+    alert('Decompose Succeeded!\nCheck your wallet or inventory in Decompose Page (on devnet)!');
+    setIsDecomposing(false);
   };
   return (
     <>

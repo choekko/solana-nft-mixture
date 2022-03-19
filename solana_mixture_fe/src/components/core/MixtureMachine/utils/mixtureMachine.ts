@@ -32,7 +32,6 @@ export const getMixtureMachineId = async (
     });
 
     const response: AxiosResponse<UploaderResponse> = await axios.post('https://mixtureapi.shop/upload', requestData);
-    console.log('upload response::', response);
     if (response.data.status === 'fail') {
       throw new Error('upload fail');
     }

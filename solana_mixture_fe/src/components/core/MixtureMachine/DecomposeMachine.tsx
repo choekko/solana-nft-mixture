@@ -71,11 +71,25 @@ const DecomposeMachine = ({
       const mintTxId = (await decompose(parentMint, mixtureMachineInfo, childMints, wallet.publicKey))[0];
       const txTimeoutInMilliseconds = 15000;
 
+      let status: any = { err: true };
       if (mintTxId) {
-        await awaitTransactionSignatureConfirmation(mintTxId, txTimeoutInMilliseconds, connection, true);
-        callbackAfterDecompose?.();
+        status = await awaitTransactionSignatureConfirmation(mintTxId, txTimeoutInMilliseconds, connection, true);
       }
-    } catch (error) {
+      if (status && !status.err) {
+        callbackAfterDecompose?.();
+      } else {
+        alert('Decompose failed! Please try again!\n(Check your funds on devnet)');
+      }
+    } catch (error: any) {
+      let message = error.msg || 'Decomposing failed! Please try again!';
+      if (!error.msg) {
+        if (!error.message) {
+          message = 'Transaction Timeout! Please try again.';
+        } else if (error.message.indexOf('0x135')) {
+          message = `Insufficient funds to decompose. Please fund your wallet.`;
+        }
+      }
+      alert(message);
       setIsDecomposing?.(false);
     }
 
@@ -87,7 +101,7 @@ const DecomposeMachine = ({
       {isLoading || isDecomposing ? (
         <>
           <BallTriangle ariaLabel="loading-indicator" color={theme.color.skyblue} width={20} height={20} />
-          {isDecomposing && <span style={{ color: theme.color.skyblue, marginLeft: '10px' }}>Composing...</span>}
+          {isDecomposing && <span style={{ color: theme.color.skyblue, marginLeft: '10px' }}>Decomposing...</span>}
         </>
       ) : (
         'Decompose'

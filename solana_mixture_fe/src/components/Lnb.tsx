@@ -4,7 +4,7 @@ import { css, Theme } from '@emotion/react';
 import LnbTab from './LnbTab';
 
 const Lnb = () => {
-  const tabs = ['home', 'purchase', 'compose', 'decompose'] as const;
+  const tabs = ['home', 'purchase', 'compose', 'decompose', 'contact'] as const;
 
   return (
     <nav css={lnbCss}>
@@ -12,9 +12,10 @@ const Lnb = () => {
         <div css={logoCss}>
           <img src="/assets/icon/logo.png" alt="logo" />
         </div>
-        {tabs.map(tab => (
-          <LnbTab key={tab} tabName={tab} />
-        ))}
+        {tabs.map(tab => tab !== 'contact' && <LnbTab key={tab} tabName={tab} />)}
+      </div>
+      <div css={{ marginBottom: '20px' }}>
+        <LnbTab tabName="contact" />
       </div>
     </nav>
   );
@@ -29,6 +30,7 @@ const lnbCss = (theme: Theme) => css`
   width: 100px;
   height: 100%;
   background-color: ${theme.color.dark};
+  z-index: 99;
 `;
 
 const logoCss = css`

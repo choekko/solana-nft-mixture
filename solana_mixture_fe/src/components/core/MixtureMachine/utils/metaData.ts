@@ -23,7 +23,6 @@ const ElementMap = {
 } as const;
 
 export const calculateImageNumber = (elementTwin: [Element, Element]): number => {
-  console.log('asdasds::', elementTwin);
   const mixtureNumberMap = [
     [
       [2, 4],
@@ -49,7 +48,6 @@ export const calculateImageNumber = (elementTwin: [Element, Element]): number =>
   ];
 
   const elementNumberTwin = [ElementMap[elementTwin[0]], ElementMap[elementTwin[1]]];
-  console.log(elementNumberTwin);
 
   return (
     1 +

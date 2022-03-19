@@ -2,11 +2,20 @@
 import { css, Theme } from '@emotion/react';
 import { useWalletModal, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const WalletBtn = () => {
   const { setVisible } = useWalletModal();
   const { wallet, connect, publicKey } = useWallet();
+  const [walletTxt, setWalletTxt] = useState('Wallet');
+
+  const handleMouseLeave = () => {
+    setWalletTxt('Wallet');
+  };
+
+  const handleMouseEnter = () => {
+    setWalletTxt('Devnet Only');
+  };
 
   useEffect(() => {
     if (!publicKey && wallet) {
@@ -35,9 +44,15 @@ const WalletBtn = () => {
       {wallet ? (
         <WalletMultiButton />
       ) : (
-        <button id="wallet_btn" css={WalletBtnCss} onClick={handleWalletClick}>
+        <button
+          id="wallet_btn"
+          css={WalletBtnCss}
+          onClick={handleWalletClick}
+          onMouseLeave={handleMouseLeave}
+          onMouseEnter={handleMouseEnter}
+        >
           <img src="/assets/icon/wallet_dark.png" css={{ width: '30px' }} />
-          <span> Wallet </span>
+          <span> {walletTxt} </span>
         </button>
       )}
     </>
@@ -60,6 +75,10 @@ const WalletBtnCss = (theme: Theme) => css`
 
   span {
     color: ${theme.color.dark};
+
+    span {
+      font-size: 12px;
+    }
   }
 
   &:hover {

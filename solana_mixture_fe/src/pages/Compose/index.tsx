@@ -25,7 +25,6 @@ const Compose = () => {
     connection,
   });
   const [candyMachineCreator, setCandyMachineCreator] = useState('');
-
   const isProcessing = useMemo(() => isComposing || isLoading, [isComposing, isLoading]);
 
   const fetchCandyMachineCreator = async () => {
@@ -49,7 +48,6 @@ const Compose = () => {
         reagentNftsData[idx]['imageUrl'] = metaData.image;
         reagentNftsData[idx]['attributes'] = metaData.attributes;
       });
-      console.log(reagentNftsData);
       setReagentNftsData(reagentNftsData);
     } catch (error) {
       console.log(error);
@@ -134,7 +132,7 @@ const Compose = () => {
   };
 
   const callbackAfterCompose = () => {
-    alert('Complete!\n See your wallet or inventory in Decompose Page');
+    alert('Compose Succeeded!\nCheck your wallet or inventory in Decompose Page (on devnet)');
     window.location.reload();
   };
 

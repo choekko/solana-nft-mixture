@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface LnbTabProps {
-  tabName: 'home' | 'purchase' | 'compose' | 'decompose' | 'compare';
+  tabName: 'home' | 'purchase' | 'compose' | 'decompose' | 'contact';
 }
 
 const LnbTab = ({ tabName }: LnbTabProps) => {
@@ -49,7 +49,7 @@ const LnbTab = ({ tabName }: LnbTabProps) => {
         onClick={handleClick}
       >
         <img src={`/assets/icon/${tabName}_${iconColorType}.png`} alt={tabName} />
-        {tabName !== 'compare' && <span>{tabName}</span>}
+        {tabName !== 'contact' && <span>{tabName}</span>}
       </button>
     </>
   );
@@ -60,12 +60,12 @@ const LabTabStyle = (theme: Theme, tabName: string, isActive: boolean) => css`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: ${tabName === 'compare' ? '70px' : '100px'};
-  height: ${tabName === 'compare' ? '70px' : '100px'};
+  width: ${tabName === 'contact' ? '70px' : '100px'};
+  height: ${tabName === 'contact' ? '70px' : '100px'};
   background-color: ${isActive ? 'white' : theme.color.skyblue};
   border: 0.5px solid ${theme.color.dark};
 
-  ${tabName === 'compare' &&
+  ${tabName === 'contact' &&
   css`
     border-radius: 20px;
   `}

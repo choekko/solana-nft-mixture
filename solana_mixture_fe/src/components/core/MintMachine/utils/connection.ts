@@ -156,12 +156,10 @@ export const sendTransactions = async (
   let breakEarlyObject = { breakEarly: false, i: 0 };
   console.log('Signed txns length', signedTxns.length, 'vs handed in length', instructionSet.length);
   for (let i = 0; i < signedTxns.length; i++) {
-    console.log('heeeeerrree');
     const signedTxnPromise = sendSignedTransaction({
       connection,
       signedTransaction: signedTxns[i],
     });
-    console.log('heeeeerrree2');
     signedTxnPromise
       .then(({ txid }) => {
         successCallback(txid, i);
@@ -174,11 +172,8 @@ export const sendTransactions = async (
           breakEarlyObject.i = i;
         }
       });
-    console.log('heeeeerrree3');
     if (sequenceType !== SequenceType.Parallel) {
       try {
-        console.log('heeeeerrree4');
-
         await signedTxnPromise;
       } catch (e) {
         console.log('Caught failure', e);

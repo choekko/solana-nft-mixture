@@ -45,16 +45,10 @@ const MintMachine = ({ mintTxt = 'Mint' }: MintMachineProps) => {
     let active = true;
 
     try {
-      const candyMachineInfo = await getCandyMachineState(
-        anchorWallet, // useAnchorWallet으로는 호환이 안 된다.
-        candyMachineId,
-        connection,
-      );
+      const candyMachineInfo = await getCandyMachineState(anchorWallet, candyMachineId, connection);
 
-      console.log('CandyMachineInfo::', candyMachineInfo.state);
       setItemsRemaining(candyMachineInfo.state.itemsRemaining);
 
-      // TODO: 민트 머신은 무한히 뽑을 수 있어야하는데 흠..
       if (candyMachineInfo.state.endSettings?.endSettingType.amount) {
         const limit = Math.min(
           candyMachineInfo.state.endSettings.number.toNumber(),
@@ -73,7 +67,6 @@ const MintMachine = ({ mintTxt = 'Mint' }: MintMachineProps) => {
 
       setIsActive((candyMachineInfo.state.isActive = active));
       setCandyMachineInfo(candyMachineInfo);
-      console.log(candyMachineInfo.state);
     } catch (error) {
       console.error(error);
       throw new Error('캔디머신 상태 동기화 실패');
@@ -99,13 +92,12 @@ const MintMachine = ({ mintTxt = 'Mint' }: MintMachineProps) => {
           setItemsRemaining(remaining);
           setIsActive((candyMachineInfo.state.isActive = remaining > 0));
           candyMachineInfo.state.isSoldOut = remaining === 0;
-          alert('Congratulations! Mint succeeded!');
+          alert('Mint succeeded!\nCheck your wallet or inventory in Compose Page (on devnet)');
         } else {
-          alert('Mint failed! Please try again!');
+          alert('Mint failed! Please try again!\n (Check your funds on devnet');
         }
       }
     } catch (error: any) {
-      console.error(error);
       let message = error.msg || 'Minting failed! Please try again!';
       if (!error.msg) {
         if (!error.message) {
