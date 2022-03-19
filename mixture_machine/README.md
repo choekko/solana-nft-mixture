@@ -18,7 +18,7 @@ By combination of those data, you can deduce authority seeds.
 ## Future Usage
 * You can use mixture machine to compose two or more hetero NFTs, NFTs which are made by different teams.   
 * You can also use it to decorate your NFT by patching sticker or badge NFTs.   
-* You cna use it to wrap your NFTs by single input.   
+* You can use it to wrap your NFTs by single input.   
    
 ## Acknowledgements and inspiration
 * [Metaplex's candymachine](https://docs.metaplex.com/)
