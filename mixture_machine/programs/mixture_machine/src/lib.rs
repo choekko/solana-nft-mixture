@@ -403,8 +403,6 @@ pub struct DecomposeNFT<'info> {
         seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref()], bump=creator_bump
     )]
     mixture_machine_creator: UncheckedAccount<'info>,
-    // With the following accounts we aren't using anchor macros because they are CPI'd
-    // through to token-metadata which will do all the validations we need on them.
     #[account(mut)]
     parent_token_mint: UncheckedAccount<'info>,
     #[account(mut)]
@@ -418,7 +416,7 @@ pub struct DecomposeNFT<'info> {
     instruction_sysvar_account: UncheckedAccount<'info>,
 }
 
-/// Candy machine state and config data.
+/// Mixture machine state and config data.
 #[account]
 #[derive(Default)]
 pub struct MixtureMachine {
@@ -430,7 +428,7 @@ pub struct MixtureMachine {
     // here there is a number of bytes equal to ceil(max_number_of_lines/8) and it is a bit mask used to figure out when to increment borsh vec u32
 }
 
-/// Candy machine settings data.
+/// Mixture machine settings data.
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Default)]
 pub struct MixtureMachineData {
     pub uuid: String,
