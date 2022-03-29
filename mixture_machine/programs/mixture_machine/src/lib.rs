@@ -2,7 +2,7 @@ pub mod utils;
 
 use {
     crate::utils::{
-        assert_is_ata, assert_owned_by, //assert_initialized, assert_keys_equal,
+        assert_is_ata, assert_owned_by, assert_keys_equal, //assert_initialized, 
         spl_token_transfer, TokenTransferParams, spl_token_burn, TokenBurnParams,
     },
     anchor_lang::{
@@ -97,7 +97,9 @@ pub mod mixture_machine {
         }
 
         let mm_key = mixture_machine.key();
-        let authority_seeds = [PREFIX.as_bytes(), mm_key.as_ref(), &[creator_bump]];
+        let pr_mint = &ctx.accounts.mint.key();
+        let authority_seeds = [PREFIX.as_bytes(), mm_key.as_ref(), pr_mint.as_ref(), &[creator_bump]];
+        //seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref(), mint.key().as_ref()], bump=creator_bump
 
         // creators[0] = mixture_machine_creator, mixture machine's PDA & the owner of child NFT vault.
         let mut creators: Vec<mpl_token_metadata::state::Creator> =
@@ -207,6 +209,7 @@ pub mod mixture_machine {
         //Account name the same for IDL compatability
         let recent_slothashes = &ctx.accounts.recent_blockhashes;
         let instruction_sysvar_account = &ctx.accounts.instruction_sysvar_account;
+        let parent_mint = &ctx.accounts.parent_token_mint;
 
         if recent_slothashes.key().to_string() == BLOCK_HASHES {
             msg!("recent_blockhashes is deprecated and will break soon");
@@ -226,7 +229,8 @@ pub mod mixture_machine {
         let children_number = ctx.remaining_accounts.len() / 2; // 나중에 checked_div로 바꿔주기
 
         let mm_key = mixture_machine.key();
-        let authority_seeds = [PREFIX.as_bytes(), mm_key.as_ref(), &[creator_bump]];
+        let pr_mint = parent_mint.key();
+        let authority_seeds = [PREFIX.as_bytes(), mm_key.as_ref(), pr_mint.as_ref(), &[creator_bump]];
         
         // order of remaining accounts: child ata - child vault
         for _i in 0..children_number {
@@ -261,10 +265,12 @@ pub mod mixture_machine {
 
         msg!("Before parent burn");
         sol_log_compute_units();
+        // check parent NFT's mint address that it is associated with Mixture PDA
+        // Parent NFT mint address를 seed로 주소 생성한 후, mm_key와 assertion
 
         // burn parent NFT.
         spl_token_burn(TokenBurnParams {
-            mint: ctx.accounts.parent_token_mint.to_account_info(),
+            mint: parent_mint.to_account_info(),
             source: ctx.accounts.parent_token_account.to_account_info(),
             amount: 1,
             authority: ctx.accounts.parent_burn_authority.to_account_info(),
@@ -369,7 +375,7 @@ pub struct ComposeNFT<'info> {
     #[account(mut)]
     mixture_machine: Account<'info, MixtureMachine>,
     #[account(
-        seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref()], bump=creator_bump
+        seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref(), mint.key().as_ref()], bump=creator_bump
     )]
     mixture_machine_creator: UncheckedAccount<'info>,
     payer: Signer<'info>,
@@ -400,7 +406,7 @@ pub struct DecomposeNFT<'info> {
     #[account(mut)]
     mixture_machine: Account<'info, MixtureMachine>,
     #[account(
-        seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref()], bump=creator_bump
+        seeds=[PREFIX.as_bytes(), mixture_machine.key().as_ref(), parent_token_mint.key().as_ref()], bump=creator_bump
     )]
     mixture_machine_creator: UncheckedAccount<'info>,
     #[account(mut)]

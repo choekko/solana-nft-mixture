@@ -6,7 +6,9 @@
 **Info : Service only runs on devnet now!**
 
 ## Core logic of composing NFT
-![image](https://user-images.githubusercontent.com/96561121/158933209-1c7294c2-844a-4ad8-ad59-91819073d492.png)
+![image](https://user-images.githubusercontent.com/96561121/160633714-e8f2b011-d585-4ed5-8c34-8dd2a8468f56.png)
+
+
 
 * Compose of NFT   
 As you invoke compose_nft function with 2 or more child NFTs,   
