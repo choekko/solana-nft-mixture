@@ -90,8 +90,6 @@ const ComposeMachine = ({
       if (!error.msg) {
         if (!error.message) {
           message = 'Transaction Timeout! Please try again.';
-        } else if (error.message.indexOf('0x135')) {
-          message = `Insufficient funds to compose. Please fund your wallet.`;
         }
       }
       alert(message);

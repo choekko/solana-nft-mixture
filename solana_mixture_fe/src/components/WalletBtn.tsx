@@ -14,7 +14,7 @@ const WalletBtn = () => {
   };
 
   const handleMouseEnter = () => {
-    setWalletTxt('Devnet Only');
+    setWalletTxt('Phantom');
   };
 
   useEffect(() => {

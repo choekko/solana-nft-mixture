@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { css } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 import { NftTokenAccount } from '@nfteyez/sol-rayz-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -29,10 +29,10 @@ const Inventory = ({ reagentNftsData, callbackAfterReagentClick, isLoading, disa
   return (
     <>
       <div>
-        <span style={{ display: 'flex', justifyContent: 'end', marginTop: '20px' }}>inventory </span>
+        <span css={inventoryDecorationTextStyle}>inventory </span>
         {isLoading ? (
           <div css={inventoryStyle}>
-            <span>isLoading...</span>
+            <span>loading...</span>
           </div>
         ) : reagentNftsData.length === 0 ? (
           <div css={inventoryStyle}>
@@ -70,20 +70,33 @@ const Inventory = ({ reagentNftsData, callbackAfterReagentClick, isLoading, disa
             ))}
           </Swiper>
         )}
+        <span css={inventoryDecorationTextStyle}>
+          version:<span>{process.env.REACT_APP_VERSION}</span>
+        </span>
       </div>
     </>
   );
 };
 
 const inventoryStyle = css`
-  margin: 0 0 20px;
   display: flex;
+  margin: 2px 0;
   justify-content: center;
   align-items: center;
   width: 560px;
   height: 100px;
   border: 1px solid #737373;
   font-size: 20px;
+`;
+
+const inventoryDecorationTextStyle = (theme: Theme) => css`
+  display: flex;
+  justify-content: end;
+
+  & > span {
+    color: ${theme.color.skyblue};
+    margin-left: 3px;
+  }
 `;
 
 export default Inventory;

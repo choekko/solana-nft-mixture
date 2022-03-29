@@ -45,7 +45,7 @@ export const compose = async (
       createMintToInstruction(mint.publicKey, userTokenAccountAddress, payer, 1, [], TOKEN_PROGRAM_ID),
     ]; // ------- signer : mint
 
-    const [mixtureMachineCreator, creatorBump] = await getMixtureMachineCreator(mixtureMachineAddress);
+    const [mixtureMachineCreator, creatorBump] = await getMixtureMachineCreator(mixtureMachineAddress, mint.publicKey);
 
     const transferAuthorityKeypair = anchor.web3.Keypair.generate();
     const vaultAddressList = await Promise.all(

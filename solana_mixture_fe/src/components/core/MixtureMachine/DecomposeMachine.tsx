@@ -37,12 +37,6 @@ const DecomposeMachine = ({
   const wallet = useWallet();
   const { connection } = useConnection();
 
-  console.log(
-    parentMint?.toString(),
-    parentMixtureProgramId?.toString(),
-    childMints.map(child => child.toString()),
-  );
-
   useEffect(() => {
     if (parentMint || parentMixtureProgramId) {
       setIsComposePossible(true);

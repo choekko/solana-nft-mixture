@@ -19,7 +19,7 @@ export const decompose = async (
     const transferAuthorityKeypair = anchor.web3.Keypair.generate();
     const mixtureMachineAddress = mixtureMachineInfo.id;
 
-    const [mixtureMachineCreator, creatorBump] = await getMixtureMachineCreator(mixtureMachineAddress);
+    const [mixtureMachineCreator, creatorBump] = await getMixtureMachineCreator(mixtureMachineAddress, mint);
 
     const mintAta = (await getAtaForMint(mint, payer))[0];
     const vaultAddressList = await Promise.all(

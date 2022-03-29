@@ -12,6 +12,7 @@ import { getCandyMachineCreator, getCandyMachineId } from 'components/core/MintM
 import { MetaData } from 'components/core/MixtureMachine/types/metaData';
 import axios from 'axios';
 import ComposeMachine from 'components/core/MixtureMachine/ComposeMachine';
+import { getAttributeValue } from 'utils/metadata';
 
 const Compose = () => {
   const wallet = useWallet();
@@ -91,11 +92,8 @@ const Compose = () => {
       if (!leftReagent && !isClickPossible) {
         if (
           rightReagent &&
-          rightReagent.attributes.some(
-            ({ trait_type, value }) =>
-              trait_type === 'ElEMENT1' &&
-              value === clickedReagentNftData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
-          )
+          getAttributeValue(rightReagent.attributes, 'Element1') ===
+            getAttributeValue(clickedReagentNftData.attributes, 'Element1')
         ) {
           alert('Same Element!');
           return;
@@ -106,11 +104,8 @@ const Compose = () => {
       if (!rightReagent && !isClickPossible) {
         if (
           leftReagent &&
-          leftReagent.attributes.some(
-            ({ trait_type, value }) =>
-              trait_type === 'ElEMENT1' &&
-              value === clickedReagentNftData.attributes.find(({ trait_type }) => trait_type === 'Element1').value,
-          )
+          getAttributeValue(leftReagent.attributes, 'Element1') ===
+            getAttributeValue(clickedReagentNftData.attributes, 'Element1')
         ) {
           alert('Same Element!');
           return;
@@ -160,7 +155,7 @@ const Compose = () => {
       <TitleBox title="Compose Reagents" subTitle="You can also compose reagents." />
       {!wallet.publicKey && (
         <label css={loginMessageStyle} htmlFor="wallet_btn">
-          <span>Please Connect Wallet</span>
+          <span>Please Connect Phantom Wallet</span>
         </label>
       )}
       {wallet?.publicKey && (

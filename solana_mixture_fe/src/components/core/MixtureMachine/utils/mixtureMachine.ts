@@ -61,10 +61,11 @@ export const getMixtureMachineState = async (
 };
 
 export const getMixtureMachineCreator = async (
-  mixtureMachine?: anchor.web3.PublicKey,
+  mixtureMachine: anchor.web3.PublicKey,
+  mixtureMint: anchor.web3.PublicKey,
 ): Promise<[anchor.web3.PublicKey, number]> => {
   return await anchor.web3.PublicKey.findProgramAddress(
-    mixtureMachine ? [Buffer.from('mixture_machine'), mixtureMachine.toBuffer()] : [Buffer.from('mixture_machine')],
+    [Buffer.from('mixture_machine'), mixtureMachine.toBuffer(), mixtureMint.toBuffer()],
     MIXTURE_MACHINE_PROGRAM,
   );
 };

@@ -6,7 +6,12 @@ const MintBox = () => {
   return (
     <div css={MintBoxCss}>
       <img src="/assets/potion_gif.gif" />
-      <span> Random Reagent X 1</span>
+      <div>
+        <span css={itemTextStyle}> Random Reagent X 1</span>
+        <p css={versionTextStyle}>
+          (version: <span>{process.env.REACT_APP_VERSION}</span>)
+        </p>
+      </div>
       <div css={MintMachineStyle}>
         <MintMachine />
       </div>
@@ -30,10 +35,20 @@ const MintBoxCss = (theme: Theme) => css`
     width: 163px;
     height: 163px;
   }
+`;
+
+const itemTextStyle = css`
+  font-size: 24px;
+`;
+
+const versionTextStyle = (theme: Theme) => css`
+  color: white;
+  font-size: 17px;
+  text-align: center;
+  margin-top: 10px;
 
   & > span {
-    color: white;
-    font-size: 24px;
+    color: ${theme.color.skyblue};
   }
 `;
 

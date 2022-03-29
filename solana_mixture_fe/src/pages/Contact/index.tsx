@@ -6,15 +6,15 @@ import { css } from '@emotion/react';
 
 const Contact = () => {
   const profiles = [
-    { imgUrl: '/assets/profile_woo.png', name: 'woo', email: 'poppinjaewoo@gmail.com' },
-    { imgUrl: '/assets/profile_seung.png', name: 'seung', email: 'skyhs3507@likelion.org' },
-    { imgUrl: '/assets/profile_hoo.png', name: 'hoo', email: 'choekko@gmail.com' },
+    { imgUrl: '/assets/profile_woo.png', name: 'c0wjay', email: 'poppinjaewoo@gmail.com' },
+    { imgUrl: '/assets/profile_seung.png', name: 'seanlion', email: 'skyhs3507@likelion.org' },
+    { imgUrl: '/assets/profile_hoo.png', name: 'choekko', email: 'choekko@gmail.com' },
   ];
 
   return (
     <>
       <main css={contactWrapStyle}>
-        <TitleBox title="Contact" subTitle="If you have any questions, please email us" />
+        <TitleBox title="Contact" subTitle="If you have any questions, please email us." />
         <section css={profileWrapStyle}>
           {profiles.map(({ imgUrl, name, email }) => (
             <Profile imgUrl={imgUrl} name={name} email={email} />
