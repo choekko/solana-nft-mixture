@@ -6,7 +6,8 @@
 **Info : Service only runs on devnet now!**
 
 ## Core logic of composing NFT
-![image](https://user-images.githubusercontent.com/96561121/160633260-53f56771-079a-4b29-87dc-6e4a91158058.png)
+![image](https://user-images.githubusercontent.com/96561121/160633714-e8f2b011-d585-4ed5-8c34-8dd2a8468f56.png)
+
 
 
 * Compose of NFT   
